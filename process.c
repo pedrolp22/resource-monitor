@@ -3,8 +3,8 @@
 #include <dirent.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
-#include "sysmon.h"
+#include <sysmon.h>
+#include <termbox2/termbox2.h>
 
 void initProcList(struct procList *list) {
     if (list == NULL) {
@@ -14,7 +14,8 @@ void initProcList(struct procList *list) {
     list->listsize = 64;
     list->procs = malloc(list->listsize * sizeof(struct procData));
     if (list->procs == NULL) {
-        printf("ERROR: malloc failed\n");
+        tb_clear();
+        tb_printf(0,0,TB_RED,TB_256_BLACK,"ERROR: malloc failed\n");
         list->listsize = 0;
     }
 }
@@ -22,7 +23,8 @@ void initProcList(struct procList *list) {
 int updateProcList(struct procList *list) {
     DIR *d = opendir("/proc");
     if (d == NULL) {
-        printf("ERROR: Could not open /proc\n");
+        tb_clear();
+        tb_printf(0,0,TB_RED,TB_256_BLACK,"ERROR: Could not open /proc\n");
         return -1;
     }
     struct dirent *entry;
@@ -35,7 +37,8 @@ int updateProcList(struct procList *list) {
                 size_t newsize = list->listsize * 2;
                 struct procData *tmp = realloc(list->procs, newsize * sizeof(struct procData));
                 if (tmp == NULL) {
-                    printf("ERROR: realloc failed\n");
+                    tb_clear();
+                    tb_printf(0,0,TB_RED,TB_256_BLACK,"ERROR: realloc failed\n");
                     closedir(d);
                     return -1;
                 }
@@ -44,7 +47,7 @@ int updateProcList(struct procList *list) {
             }
             size_t id = list->nprocs;
 
-            list->procs[id].pid = atoi(entry->d_name);
+            list->procs[id].pid = (int)strtol(entry->d_name, nullptr, 0);
             char path[256];
             snprintf(path, sizeof(path), "/proc/%d/stat", list->procs[id].pid);
             FILE *f = fopen(path, "r");
@@ -92,7 +95,7 @@ void freeProcList(struct procList *list) {
         return;
     }
     free(list->procs);
-    list->procs = NULL;
+    list->procs = nullptr;
     list->nprocs = 0;
     list->listsize = 0;
 }

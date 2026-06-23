@@ -8,4 +8,8 @@ add_executable(sysmon main.c
         cpu.c
         process.c
         utils.c
-        sysmon.h)
+        include/sysmon.h)
+
+target_include_directories(sysmon
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/external)

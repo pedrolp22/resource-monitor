@@ -1,11 +1,13 @@
 //CPU data parsing module
 #include <stdio.h>
-#include "sysmon.h"
+#include <sysmon.h>
+#include <termbox2/termbox2.h>
 
 void readCpu(struct cpuData *data){
     FILE *f1 = fopen("/proc/stat", "r");
     if(f1 == NULL) {
-        printf("ERROR: Could not open /proc/stat\n");
+        tb_clear();
+        tb_printf(0,0,TB_RED,TB_256_BLACK,"ERROR: Could not open /proc/stat\n");
         return;
     }
     int read = fscanf(f1,"cpu %ld %ld %ld %ld %ld %ld %ld", &data->usrTime, &data->niceTime, &data->sysTime,

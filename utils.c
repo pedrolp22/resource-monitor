@@ -1,16 +1,18 @@
 // General utils module
 #include <ctype.h>
-#include "sysmon.h"
+#include "include/sysmon.h"
 
-bool stringIsNumeric(char *str){
-    if (*str == '\0') {
+bool stringIsNumeric(char *str) {
+    if (str == NULL || *str == '\0') {
         return false;
     }
-    if (!isdigit((unsigned char)*str)){
-        return false;
+
+    while (*str != '\0') {
+        if (!isdigit((unsigned char)*str)) {
+            return false;
+        }
+        str++;
     }
-    if(*(str+1) == '\0') {
-        return true;
-    }
-    return stringIsNumeric(str+1);
+
+    return true;
 }

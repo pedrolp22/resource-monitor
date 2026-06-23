@@ -1,12 +1,14 @@
 //Memory data parsing module
 #include <stdio.h>
 #include <stdlib.h>
-#include "sysmon.h"
+#include <sysmon.h>
+#include <termbox2/termbox2.h>
 
 void readMem(struct memData *data) {
     FILE *f1 = fopen("/proc/meminfo", "r");
     if(f1 == NULL) {
-        printf("ERROR: Could not open /proc/meminfo\n");
+        tb_clear();
+        tb_printf(0,0,TB_RED,TB_256_BLACK,"ERROR: Could not open /proc/meminfo\n");
         return;
     }
     char buffer[256];
