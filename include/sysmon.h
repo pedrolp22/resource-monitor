@@ -3,32 +3,6 @@
 #include <stddef.h>
 #include <termbox2/termbox2.h>
 
-//render configs for termbox2
-//todo: make cpu render different colors for usage %
-enum cpuRender {
-    bgcpu = TB_256_BLACK,
-    fgcpuneat = 12,
-    fgcpuok = 10,
-    fgcpumod = 11,
-    fgcpumodhigh = 202,
-    fgcpucrit = 9
-};
-
-enum memRender {
-    bgmem = TB_256_BLACK,
-    fgmem = 13,
-};
-
-enum procRender {
-    bgproc = TB_256_BLACK,
-    fgproc = 220
-};
-
-enum clrRender{
-    bgclr = TB_256_BLACK,
-    fgclr = 231
-};
-
 // CPU
 struct cpuData{
     long sysTime;
